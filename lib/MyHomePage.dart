@@ -1,11 +1,11 @@
 import 'dart:io';
-
+import 'package:google_translate/google_translate.dart';
 import 'package:flutter/material.dart';
 import 'package:speech_to_text/speech_recognition_result.dart';
 import 'package:speech_to_text/speech_to_text.dart';
 import 'package:path_provider/path_provider.dart';
 
-class MyHomePage extends StatefulWidget {
+/*class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key}) : super(key: key);
 
   @override
@@ -178,5 +178,73 @@ class _MyHomePageState extends State<MyHomePage> {
       );
     }
   }
-}
+}*/
 //SO at the end of the hung up button we havve to give to the function that the we have to tell to stop it or end the speech to ttextr listening
+import 'package:flutter/material.dart';
+import 'package:google_translate/google_translate.dart';
+
+void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  GoogleTranslate.initialize(
+    apiKey: "AIzaSyA3jW_Fy9eqaeDA-Lh0qNm8LbXjhJW-ay8",
+    targetLanguage: "it",
+  );
+
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Flutter Demo',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: const MyHomePage(),
+    );
+  }
+}
+
+class MyHomePage extends StatefulWidget {
+  const MyHomePage({super.key});
+
+  @override
+  State<MyHomePage> createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
+  String title = 'Flutter Demo Home Page';
+  String body = 'Try someother language';
+
+  @override
+  void initState() {
+    title.translate().then((value) {
+      setState(() {
+        title = value;
+      });
+    });
+
+    body.translate(sourceLanguage: 'en', targetLanguage: 'ta').then((value) {
+      setState(() {
+        body = value;
+      });
+    });
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(title),
+      ),
+      body: Center(
+        child: Text(body),
+      ),
+    );
+  }
+}
